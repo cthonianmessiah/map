@@ -1,0 +1,27 @@
+Copyright (c) 2012 ICRL
+
+See the file license.txt for copying permission.
+
+
+map interface guidelines
+
+map interfaces are not functions in the traditional sense, because their definition is dependent on an event (x just happened) rather than a function call (x will happen).  As such, map interface definitions describe an action that has just been taken rather than an action that is about to be taken.
+
+For example, the core map implementation has two pre-defined interfaces, 'start' and 'log'.  Their definitions are as follows:
+
+start()
+  The map program has started.
+  Has no arguments.
+log(timestamp, category, message)
+  A message has been sent to the program's log.
+  timestamp - A Date() object that contains the message's creation timestamp.
+  category - A descriptive grouping for logged messages.  Suggested categories include:
+    LOG - Log messages that describe significant events during normal program operation
+    WARN - Log messages that describe unexpected but recoverable program conditions
+    ERROR - Log messages that describe program failures
+    FINE - Log messages that describe routine details of program operations
+  message - The details of the log message.
+
+Describing interfaces in this way allows them to be standardized without making any unnecessary assumptions about the next step in the workflow.  New features can be added to the workflow of a program without having to describe any of the existing interfaces differently.
+
+While the interface definition appears to accept multiple arguments, map interfaces should instead pass references to a single data object.  This simplifies the use of optional arguments.  If a feature that implements an interface uses any data not explicitly required in the interface definition, it must be prepared for that property of the data object to be missing when the interface is activated.

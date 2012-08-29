@@ -1,0 +1,94 @@
+Copyright (c) 2012 ICRL
+
+See the file license.txt for copying permission.
+
+
+maws interface definitions
+
+request(request, response)
+  maws has received a request from a client.
+  request - The http request object created by the client request.
+  response - The http response object that will receive the maws response.
+
+request_secure(request, response)
+  maws has confirmed that the request has the necessary credentials to be rendered.
+  request - The http request object created by the client request.
+  response - The http response object that will receive the maws response.
+
+request_file(resource, mime, path, response)
+  maws has determined that a request should be serviced from a locally stored file.
+  resource - The request URL that corresponds to the file being retrieved.
+  mime - The MIME type of the data that was requested.
+  path - The location of the file on the local filesystem.
+  response - The http response object that will receive the maws response.
+
+request_database(resource, arguments, mime, dsn, query, response)
+  maws has determined that a request should be serviced from a database.
+  resource - The request URL that corresponds to the query being executed.
+  arguments - The query parameters specified in the URL.
+  mime - The MIME type of the data that was requested.
+  dsn - The name of the database connection to send the query to.
+  query - The static query text to submit to the database.
+          Parameter substitution has not yet taken place.
+  response - The http response object that will receive the maws response.
+
+request_dynamic(resource, arguments, mime, definition, response)
+  maws has determined that a request should be serviced from dynamicallly
+  generated content.
+  resource - The request URL that corresponds to the dynamic content being rendered.
+  arguments - The query parameters specified in the URL.
+  mime - The MIME type of the data that was requested.
+  definition - A javascript object defining the dynamic content.
+  response - The http response object that will receive the maws response.
+
+request_cache(resource, mime, response)
+  maws has determined that a request should be serviced from data cached in memory.
+  resource - The request URL that corresponds to the data being retrieved.
+  mime - The MIME type of the data that was requested.
+  response - The http response object that will receive the maws response.
+
+request_render(resource, status, mime, content, response, cachetime)
+  maws has prepared data to be written back to the client.
+  resource - The request URL that corresponds to the data being retrieved.
+  status - The http status code to send back to the client.
+  mime - The MIME type of the data that was requested.
+  content - String, buffer, or stream data to be written back to the client.
+  response - The http response object that will receive the maws response.
+  cachetime - Number of milliseconds to cache this request in memory.  Optional.
+              If set to zero, indicates cache with no explicit timeout.
+
+request_render_cache(resource, status, mime, content, response)
+  maws has prepared data to be written back to the client and passed it through
+  the caching mechanism.
+  resource - The request URL that corresponds to the data being retrieved.
+  status - The http status code to send back to the client.
+  mime - The MIME type of the data that was requested.
+  content - String, buffer, or stream data to be written back to the client.
+  response - The http response object that will receive the maws response.
+  cachetime - Number of milliseconds to cache this request in memory.  Optional.
+              If set to zero, indicates cache with no explicit timeout.
+
+request_error(status, message, response)
+  maws has encountered an error processing the client request.
+  status - The http status code to write back to the client.
+  message - The error text to send back to the client.
+  response - The http response object that will receive the maws response.
+
+cache_created(resource)
+  maws has finished storing the indicated resource in memory and can serve requests
+  for that resource directly from the cache.
+  resource - The request URL that corresponds to the cached data.
+
+cache_spoiled(resource)
+  maws can no longer serve requests for the indicated resource from memory.
+  resource - The request URL that corresponds to the cached data.
+
+cache_missed(resource, mime, response)
+  maws has checked the memory cache for a given resource and found no available data.
+  resource - The request URL that corresponds to the cached data.
+  mime - The MIME type of the data that was requested.
+  response - The http response object that will receive the maws response.
+
+cache_spoil(resource)
+  maws has determined that the cached data for this resource, if any, is no longer valid.
+  resource - The request URL that corresponds to the cached data.
